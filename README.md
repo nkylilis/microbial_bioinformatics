@@ -1,7 +1,8 @@
 # microbial_bioinformatics
 Software tools for carrying out research in microbial bioinformatics
 
-## pangenome_analysis_pipeline
+## Tools:
+## 1) pangenome_analysis_pipeline
 * ### Description: 
   * Python script for carrying out pangenome analysis for microbial species including genome annotation
 * ### Dependencies:
