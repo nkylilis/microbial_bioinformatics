@@ -3,7 +3,7 @@ Software tools for carrying out research in microbial bioinformatics
 
 ## pangenome_analysis_pipeline
 * ### Description: 
-  * Python script for carrying out pangenome analysis for microbial species including genome annotation using prokka
+  * Python script for carrying out pangenome analysis for microbial species including genome annotation
 * ### Dependencies:
   * prokka - microbial genome annotation (https://github.com/tseemann/prokka)
   * Roary - pangenome analysis pipeline (https://github.com/sanger-pathogens/Roary)
