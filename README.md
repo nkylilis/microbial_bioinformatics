@@ -6,6 +6,7 @@ Software tools for carrying out research in microbial bioinformatics
 * ### Description: 
   * Python script for carrying out pangenome analysis for microbial species including genome annotation
 * ### Dependencies:
+  * ETEtoolkit - ete-ncbiquery for NCBI taxonomy resource
   * prokka - microbial genome annotation (https://github.com/tseemann/prokka)
   * Roary - pangenome analysis pipeline (https://github.com/sanger-pathogens/Roary)
   * FastTree - building phylogenetic trees ()
