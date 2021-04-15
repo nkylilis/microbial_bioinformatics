@@ -132,10 +132,16 @@ for species in l_species:
                 with open(d_species[species]['gff_dir_path'] + name) as f:
                     with open(d_species[species]['gff_dir_path'] + species + '_combined.gff', "a") as f1:
                         for line in f:
-                            if not line == '##FASTA\n':
-                                f1.write(line)
-                            elif line == '##FASTA\n':
+                            if ((line.startswith('##')) & (not line == '##FASTA\n')):
+                                print(1)
+                                pass
+                            elif ((line.startswith('##')) & (line == '##FASTA\n')):
+                                print(2)
                                 break
+                            elif not line.startswith('##'):
+                                #print(3)
+                                f1.write(line)
+
     # adding fasta sequence
     for name in l_fnames:
         if '.gff' in name:
