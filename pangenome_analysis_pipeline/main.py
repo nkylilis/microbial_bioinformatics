@@ -28,15 +28,19 @@ Pangenome analysis
 # packages
 import re
 import os
+import pandas as pd
 
 # custom modules
-from get_species_set import get_represenatives
+from get_species_set import get_representatives
 from get_fasta_seq import get_fasta_seq
 
 
 #%% select clade of interest for pangenome analysis
 clade = "Vibrionaceae"
-df = get_represenatives(clade)
+df = get_representatives(clade)
+df_outgroup= get_representatives('Escherichia coli')
+
+df = pd.concat([df,df_outgroup]) 
 
 #% find replicon accession for each species
 d_species = {}
@@ -133,13 +137,10 @@ for species in l_species:
                     with open(d_species[species]['gff_dir_path'] + species + '_combined.gff', "a") as f1:
                         for line in f:
                             if ((line.startswith('##')) & (not line == '##FASTA\n')):
-                                print(1)
                                 pass
                             elif ((line.startswith('##')) & (line == '##FASTA\n')):
-                                print(2)
                                 break
                             elif not line.startswith('##'):
-                                #print(3)
                                 f1.write(line)
 
     # adding fasta sequence
