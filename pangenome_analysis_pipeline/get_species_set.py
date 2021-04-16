@@ -5,7 +5,7 @@ Created on Mon Apr 12 12:08:31 2021
 
 @author: nicolaskylilis
 """
-def get_represenatives(clade):
+def get_representatives(clade):
     """
     
 
