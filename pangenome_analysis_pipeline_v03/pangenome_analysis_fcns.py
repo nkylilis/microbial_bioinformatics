@@ -53,7 +53,7 @@ def get_representatives(parent):
     
     # packages
     import pandas as pd
-    import urllib
+    import urllib.request
     import os
     
     if not os.path.exists("primary_data"):
