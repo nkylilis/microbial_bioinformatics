@@ -21,14 +21,13 @@ Pangenome analysis
     - ETEtoolkit: ete-ncbiquery
     - prokka: bacterial genome anotation
     - roary: pangenome analysis
-    - FastTree: phylogentic tree
+
 """
 
 #%% select group of organisms for pangenome analysis & store information in a dict = d_species
 
 # packages and modules
 import pangenome_analysis_fcns
-import pandas as pd
 import re
 
 # select clade of interest for pangenome analysis
@@ -64,7 +63,10 @@ for tx_id, sp in df.iterrows():
     l_repl = sp['Replicons'].split(';')
     repl = []
     for r in l_repl:
-        m = re.search(':(.+?)/', r).group(1)
+        try:
+            m = re.search(':(.+?)/', r).group(1)
+        except:
+            m = re.search(':(.+?)/?$', r).group(1)
         repl += [m]
     d_species[name]['replicons'] = repl
 
@@ -80,7 +82,10 @@ import os
 import pangenome_analysis_fcns
 pangenome_analysis_fcns.get_fasta_seq(d_species)
 
+
 # constructing dict for paths for species directories and their replicons
+if not os.path.exists("species_genomes"):
+    os.mkdir("species_genomes")
 cwd = os.getcwd() + '/species_genomes'
 for root, dirs, files in os.walk(cwd):
    for name in dirs:
@@ -165,7 +170,7 @@ for species in d_species:
                                     f1.write(line)
 
 #%% pangenome analysis
-"""
+
 # packages & modules
 import os
 
@@ -195,16 +200,9 @@ for species in d_species:
 
 #blastp=95%
 #os.system("roary -f genomes_ncbi_copy/pangenome_analysis/output_with_alignment -e -mafft genomes_ncbi_copy/pangenome_analysis/*.gff")
-#blastp=50%
+#blastp=50%rroary
+i = str(50) #minimum percentage identity for blastp
 
-cmd = "roary -f pangenome_analysis/output_with_alignment -i 50 -e -mafft pangenome_analysis/*.gff"
+cmd = "roary -f pangenome_analysis/output_with_alignment -i " + i + " -e -mafft pangenome_analysis/*.gff"
 os.system(cmd)
 del cmd
-"""
-#%% phylogenetic Tree
-
-"""
-# build phylogenetic tree with FastTree
-import os
-os.system("FastTree -nt -gtr output_with_alignment/core_gene_alignment.aln > tree.newick")
-"""

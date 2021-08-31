@@ -43,7 +43,7 @@ def get_representatives(parent):
     dict_descendants = ncbi.get_taxid_translator(l_descendants)
     
     tree_descendants = ncbi.get_descendant_taxa(parent, intermediate_nodes=False, rank_limit=None, collapse_subspecies= False, return_tree= True)
-    print(tree_descendants.get_ascii(attributes=['sci_name', 'taxid']))
+    #print(tree_descendants.get_ascii(attributes=['sci_name', 'taxid']))
     
     df_clade = pd.DataFrame(dict_descendants.values(), index = dict_descendants.keys(), columns=["name"])
     df_clade.index.name = "tax_id"
@@ -66,8 +66,8 @@ def get_representatives(parent):
     link = "https://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/assembly_summary_refseq.txt"
     fpath = "primary_data/assembly_summary_refseq.txt"
     if not os.path.exists(fpath):
-        print("Downloading doc: assembly_summary_refseq.txt from NCBI FTP")
-        urllib.request.urlretrieve(link, fpath)
+        print("\n***** MESSAGE *******\nFrom: pangenome_analysis_fcns.get_representatives()\nDownloading doc: assembly_summary_refseq.txt from NCBI FTP \n")
+        urllib.request.urlretrieve(link, fpath, reporthook = show_progress)
     df_assembly_refseq= pd.read_csv(fpath, sep='\t', skiprows=(1), low_memory=False)
     df_assembly_refseq = df_assembly_refseq[df_assembly_refseq["assembly_level"] == 'Complete Genome']
     df_assembly_refseq = df_assembly_refseq[(df_assembly_refseq['refseq_category'] == 'representative genome') | (df_assembly_refseq['refseq_category'] == 'reference genome')]
@@ -83,9 +83,8 @@ def get_representatives(parent):
     link = "https://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/" + "prokaryotes.txt"
     fpath = "primary_data/prokaryotes.txt"
     if not os.path.exists(fpath):
-        print("Downloading doc: prokaryotes.txt from NCBI FTP")
-        print("Message: Large file - this might take a while")
-        urllib.request.urlretrieve(link, fpath)
+        print("\n***** MESSAGE *******\nFrom: pangenome_analysis_fcns.get_representatives()\nDownloading doc: prokaryotes.txt from NCBI FTP. Large file - this might take a while\n")
+        urllib.request.urlretrieve(link, fpath, reporthook = show_progress)
     df_prok= pd.read_csv(fpath, sep='\t', low_memory=False)
     df_prok = df_prok[df_prok['Status'] == "Complete Genome"]
     df_prok = df_prok[df_prok['Reference'] == "REPR"]
@@ -99,8 +98,18 @@ def get_representatives(parent):
     
     return df_clade_reference, dict_descendants, tree_descendants
 
-
-
+def show_progress(a,b,c):
+    '''''Callback function 
+    @a:Downloaded data block 
+    @b:Block size 
+    @c:Size of the remote file 
+    '''  
+    per=100.0*a*b/c  
+    if per>100:  
+        per=100  
+    print('%.2f%%' % per)
+        
+        
 def get_fasta_seq(d_species):
     """
     
@@ -181,19 +190,3 @@ def annotate_with_prokka(d_species):
             else:
                 print("Directory: " + outdir_name + " exists --> Skipping annotation")
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
