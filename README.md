@@ -38,5 +38,5 @@ Software tools for carrying out research in microbial bioinformatics
   * ete3 - A Python framework for the analysis and visualization of trees. (http://etetoolkit.org/)
 * ### Usage:
   * executed by main.py file
-  * species fasta genome sequences to be downloaded in folders (folder name = species name) situated in the root directory
+  * phenotypic data file should be placed in primary_data dir. Write a function that returns a pandas dataFrame of index = tax_id;
   * output: reulsts files in scoary_dir created upon scipt execution
