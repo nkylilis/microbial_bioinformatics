@@ -1,0 +1,31 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Aug 17 16:03:01 2021
+
+@author: nicolaskylilis
+
+********************************************************************
+To run analysis on server:
+********************************************************************
+
+# open terminal application locally
+
+# copy directory/file(s) to server (password required)
+> scp -r /Users/nicolaskylilis/Desktop/panGWAS_v1 vpromp@147.52.203.130:/data/vprobon/SpeedyMicrobes/panGWAS
+
+# connect to server (password required)
+> ssh vpromp@147.52.203.130
+
+# navigate to personal directory on server
+> cd /data/vprobon/SpeedyMicrobes/panGWAS/
+
+* rename working directory with date identifier
+> mv panGWAS_v1 panGWAS_v1_210901
+
+* navigate to directory
+> cd panGWAS_v1_210901
+
+# execute script
+> screen -S panGWAS -dm python main.py
+
