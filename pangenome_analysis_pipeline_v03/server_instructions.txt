@@ -14,7 +14,7 @@ Created on Tue Aug 31 13:05:35 2021
 > ssh vpromp@147.52.203.130
 
 * navigate to directory
-> /data/vprobon/SpeedyMicrobes/pangenome_analysis
+> cd /data/vprobon/SpeedyMicrobes/pangenome_analysis
 
 * rename working directory with date identifier
 > mv pangenome_analysis_pipeline_v03 pangenome_analysis_pipeline_v03_xxxxxx
@@ -22,8 +22,8 @@ Created on Tue Aug 31 13:05:35 2021
 * navigate to directory
 > cd pangenome_analysis_pipeline_v03_xxxxxx
 
-* run pangenome analysis script with python
-> python main.py
+* run pangenome analysis script with python and record shell output to file
+> nohup python main.py &
 
 
 
