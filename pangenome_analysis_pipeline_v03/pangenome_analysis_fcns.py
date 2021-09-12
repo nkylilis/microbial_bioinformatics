@@ -190,3 +190,19 @@ def annotate_with_prokka(d_species):
             else:
                 print("Directory: " + outdir_name + " exists --> Skipping annotation")
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
