@@ -401,6 +401,7 @@ def kegg_pathway_maps_analysis_level_b(d_org, custom_list = []):
     Description
     Creates bar plots figures of of level B pathway maps per pangenome section for specified Level A kegg categories. 
     Newly created figures are saved in dir: results_plots/
+    *** Recomendation *** default custom list will take very long to compute. Use custom list based on results from the kegg pathway analysis for Level A maps
 
     Parameters
     ----------
@@ -410,6 +411,7 @@ def kegg_pathway_maps_analysis_level_b(d_org, custom_list = []):
                      See all options by : import kegg_db
                                           df_ontology = kegg_db.load_brite_pathways_ontology(ontology_fpath = "primary_data/br08901.keg")
                                           print("Available Level A pathway maps options:\n",list(set(df_ontology["level_A"])))
+                     
     Returns
     -------
     None.
@@ -436,7 +438,10 @@ def kegg_pathway_maps_analysis_level_b(d_org, custom_list = []):
     
     import pandas as pd
     
-    for level_A in level_A_lst:    
+    for level_A in level_A_lst:
+        
+        message = "*** UPDATE *** \nFrom kegg_annotation.kegg_pathway_maps_analysis_level_b(): \n - Annotating gene groups for Level A pathway maps subcategory: " + level_A + "\n..."
+        print(message)
         
         # assign pathways to KO ids
         df_ontology_m = df_ontology[df_ontology["level_B"] != "Global and overview maps"]
