@@ -23,6 +23,8 @@ Pangenome analysis
     - roary: pangenome analysis
 
 """
+# make log file
+f = open("my_log.log", "w")
 
 #%% select group of organisms for pangenome analysis & store information in a dict = d_species
 
@@ -49,7 +51,7 @@ if outgroup != None:
 
 # storage variable
 d_species = {}
-for tx_id, sp in df.iterrows():
+for i, sp in df.iterrows():
     
     name = sp['organism_name'].replace(' ','_')
     
@@ -57,7 +59,7 @@ for tx_id, sp in df.iterrows():
     d_species[name] = {}
     
     # tax id
-    d_species[name]['tax_id'] = tx_id
+    d_species[name]['tax_id'] = sp["taxid"]
     
     # NCBI replicons refseq accession 
     l_repl = sp['Replicons'].split(';')
@@ -70,7 +72,7 @@ for tx_id, sp in df.iterrows():
         repl += [m]
     d_species[name]['replicons'] = repl
 
-del repl, r, name, sp, l_repl, m, tx_id
+del repl, r, name, sp, l_repl, m, i
 
 
 #%%  organisms genomes annotation
@@ -206,3 +208,35 @@ i = str(50) #minimum percentage identity for blastp
 cmd = "roary -f pangenome_analysis/output_with_alignment -i " + i + " -e -mafft pangenome_analysis/*.gff"
 os.system(cmd)
 del cmd
+
+#%% pangenome structure analysis
+
+import post_analysis
+
+# plotting results
+# graphs are saved in dir: results_plots/
+post_analysis.plot_summary_statistics()
+post_analysis.plot_converging_of_core()
+post_analysis.plot_convergence_of_new_genes()
+post_analysis.plot_converging_of_pangenome()
+
+#%% kegg pathways analysis of pangenome
+
+import kegg_db
+
+# get organism ids
+for org in d_species:
+    #print(key)
+    tax_id = d_species[org]["tax_id"]
+    print("\n Searching KEGG db for: " + org)
+    d_species[org]["kegg_id"] = kegg_db.get_organism_kegg_id(tax_id)
+
+
+# # LEVEL A analysis
+# import kegg_annotation
+# kegg_annotation.kegg_pathway_maps_analysis_level_a(d_species)
+
+
+# LEVEL B analysis
+import kegg_annotation
+kegg_annotation.kegg_pathway_maps_analysis_level_b(d_species)
