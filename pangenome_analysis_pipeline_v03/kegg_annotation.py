@@ -386,6 +386,10 @@ def kegg_pathway_maps_analysis_level_a(d_org):
     ax.set_axisbelow(True)
     ax.grid(color='gray', linestyle='dashed')
     
+    for container in ax.containers:
+        ax.bar_label(container, label_type='edge')
+    
+    
     #### save figure
     import os
     fname = "pangenome_kegg_annotation_pathways_level_A.png"
@@ -549,6 +553,9 @@ def kegg_pathway_maps_analysis_level_b(d_org, custom_list = []):
         ax.set_title("KEGG pathway maps - Level B:" + level_A)
         ax.set_axisbelow(True)
         ax.grid(color='gray', linestyle='dashed')
+        
+        for container in ax.containers:
+            ax.bar_label(container, label_type='edge')
         
         #### save figure
         import os

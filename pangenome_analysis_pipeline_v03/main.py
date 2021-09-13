@@ -232,11 +232,11 @@ for org in d_species:
     d_species[org]["kegg_id"] = kegg_db.get_organism_kegg_id(tax_id)
 
 
-# # LEVEL A analysis
-# import kegg_annotation
-# kegg_annotation.kegg_pathway_maps_analysis_level_a(d_species)
+# LEVEL A analysis
+import kegg_annotation
+kegg_annotation.kegg_pathway_maps_analysis_level_a(d_species)
 
 
 # LEVEL B analysis
 import kegg_annotation
-kegg_annotation.kegg_pathway_maps_analysis_level_b(d_species)
+kegg_annotation.kegg_pathway_maps_analysis_level_b(d_species, custom_list = ['Cellular Processes','Human Diseases','Genetic Information Processing','Metabolism','Environmental Information Processing'])
