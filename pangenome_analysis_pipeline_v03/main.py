@@ -126,50 +126,42 @@ del cwd, dirs, files, name, root, species
   
 #%% assemble single gff files for roary
 
-# move gff files (from prokka annotation) to directory
-for species in d_species:
-    dir_path = d_species[species]['species_dir_path'][0] 
-    if not os.path.exists(dir_path + '/gff_files'):
-        os.mkdir(dir_path  + '/gff_files')
-    os.system('cp ' + dir_path +'/*_annotated/*.gff ' + dir_path + '/gff_files')
-    d_species[species]['gff_dir_path'] = dir_path + '/gff_files/'
+for species in d_species.keys():
+    
+    gff3 = [] # combined storage variable
+    gff = []
+    fasta = []
+    
+    for repl in d_species[species]["replicons"]:
+            
+        f_path_fasta = d_species[species]['species_dir_path'][0] + "/" + repl + ".fasta"
+        with open(f_path_fasta) as fhandle2:
+            fasta_txt = fhandle2.readlines()
+            line_0 = fasta_txt[0].split(" ")[0] + "\n"
+            fasta_txt = [line_0] + fasta_txt[1:-1]
+        fasta += fasta_txt
+            
+        
+        f_path_gff = d_species[species]['species_dir_path'][0] + "/" + repl + "_annotated" + "/" + repl + ".gff"
+        with open(f_path_gff) as fhandle:
+            gff_txt = fhandle.readlines()[1:]
+            gff_txt_new =[]
+            for line in gff_txt:
+                if line[0:7] != "##FASTA":
+                    gff_txt_new +=[line]
+                else:
+                    break
+        gff += gff_txt_new
 
+    gff3 = ["##gff-version 3\n"] + gff + fasta
     
-for species in d_species:
     
-    l_fnames = os.listdir(d_species[species]['gff_dir_path'])
-    #print(l_fnames)
-    
-    # adding features
-    for name in l_fnames:
-        if '.gff' in name:
-            if not "combined"in name:
-                #print(name)
-                with open(d_species[species]['gff_dir_path'] + name) as f:
-                    with open(d_species[species]['gff_dir_path'] + species + '_combined.gff', "a") as f1:
-                        for line in f:
-                            if ((line.startswith('##')) & (not line == '##FASTA\n')):
-                                pass
-                            elif ((line.startswith('##')) & (line == '##FASTA\n')):
-                                break
-                            elif not line.startswith('##'):
-                                f1.write(line)
-
-    # adding fasta sequence
-    for name in l_fnames:
-        if '.gff' in name:
-            if not "combined"in name:
-                #print(name)
-                with open(d_species[species]['gff_dir_path'] + name) as f:
-                    with open(d_species[species]['gff_dir_path'] + species + '_combined.gff', "a") as f1:
-                        logic = 0
-                        count = 0
-                        for line in f:
-                            if line == '##FASTA\n':
-                                logic = 1
-                            if logic == 1:
-                                if not line == '##FASTA\n':
-                                    f1.write(line)
+    if not os.path.exists(d_species[species]['species_dir_path'][0] + "/gff_files"):
+        os.mkdir(d_species[species]['species_dir_path'][0] + "/gff_files")
+    fname = d_species[species]['species_dir_path'][0] + "/gff_files/" + species + "_combined.gff" 
+    with open(fname, "w") as fhandle3:
+        for item in gff3:
+            fhandle3.write(item)
 
 #%% pangenome analysis
 
